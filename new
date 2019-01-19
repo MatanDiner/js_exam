@@ -17,7 +17,7 @@ while(life>0 && !isWon(phrase, letters)){
               life -= 1;
         }
     }
-if(life == 0){
+if(life === 0){
     console.log("You lost!");
 }
 else{
