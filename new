@@ -1,27 +1,22 @@
 
 var letters = [];
+const readlineSync = require('readline-sync');  
 
-if(process.argv.length>2){
-    var phrases = ["hellow word","star","sky","basketball"];
-    letters.push(process.argv[2]);
-    runGame(phrases);
-}
-
-//runGame(phrases);
-
+runGame(["hellow word","star","sky","basketball"]);
 
 function runGame(phrases){
-var r = Math.floor(Math.random()*10);
+var r = Math.floor(Math.random()*4);
 var phrase =  phrases[r];   
 var life = 10;
 while(life>0 && !isWon(phrase, letters)){
     console.log(`life: ${life}`);
     console.log(getFindsStr(phrase, letters));
-    console.log("Enter another letter please");
-    if(!isInPhrase(phrase, letters)){
-        life -= 1;
+    var letter = readlineSync.question('Enter another letter please: ');
+    letters.push(letter);
+    if(!isInPhrase(phrase, letter)){
+              life -= 1;
+        }
     }
-}
 if(life == 0){
     console.log("You lost!");
 }
