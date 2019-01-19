@@ -1,55 +1,73 @@
-/*if(process.argv.length>2){
-    process.argv.shift();
-    process.argv.shift();
-    runGame(process.argv);
-}*/
 
-phrases = ["hellow word","star","sky","basketball"]
+var letters = [];
+
+if(process.argv.length>2){
+    var phrases = ["hellow word","star","sky","basketball"];
+    letters.push(process.argv[2]);
+    runGame(phrases);
+}
 
 //runGame(phrases);
 
 
-
 function runGame(phrases){
-var letter = process.argv[2];
-var r = math.floor(math.random()*10);
+var r = Math.floor(Math.random()*10);
 var phrase =  phrases[r];   
 var life = 10;
-while(life>0 && !isWon(phrase, letter)){
+while(life>0 && !isWon(phrase, letters)){
     console.log(`life: ${life}`);
-
+    console.log(getFindsStr(phrase, letters));
+    console.log("Enter another letter please");
+    if(!isInPhrase(phrase, letters)){
+        life -= 1;
+    }
+}
+if(life == 0){
+    console.log("You lost!");
+}
+else{
+    console.log("you won!");
 }
 }
 
-getFindsStr("star",["s","r"]);
+
+
+//console.log(getFindsStr("Foo bar baz",["a","f","z"]));
+
+
 function getFindsStr(phrase, letters){
+    var str_p = phrase.toLowerCase().split("");
+    var str = [];
 
-    var str_p = phrase.split("");
-    var arr =[];
-    var obj = {};
-    for(var i=0;i<str_p.length;i++){
-        for(var j=0;j<letters.length;j++){
-            if(str_p[i] == letters[j] ){
-                obj[i] == str_p[i];
+    for(var i=0;i<letters.length;i++){
+
+        for(var j=0;j<str_p.length;j++){
+
+            if(letters[i] == str_p[j]){
+               str[j] = str_p[j];
             }
+            else if(str_p[j] == " "){
+                str[j] = " ";
+            }
+           
         }
-    }
-    var s= [];
-    for(var key in obj){
-      for(var k=0;k<str_p.length;k++){
-        if(key == k){
-            s[key] = str_p[k];
-        }
-        else{
-            s[key] = "_";
-        }
-      }
-      console.log(s);
-      return s;
     }
 
+    for(var k=0;k<phrase.length;k++){
+        if(str[k] == undefined){
+            str[k] = "_";
+        }
+    }
+    return str.join(" ");
 
 }
+
+
+
+//var phrase = 'Foo bar baz';
+//console.log(isInPhrase(phrase, 'b')); // true
+//console.log(isInPhrase(phrase, 'x')); // false
+
 
 function isInPhrase(phrase, letter){
 var str = phrase.split("");
@@ -61,26 +79,21 @@ return false;
 
 }
 
+
+
+//var phrase = 'abc aa bb ab';
+//var letters = ['a', 'b', 'c'];
+//console.log(isWon(phrase, letters)); // true
+//console.log(isWon('xyza', letters)); // false
+
 function isWon(phrase, letters){
 
-var str_p = phrase.split("");
-var str_l = letters.split("");
-var arr =[];
-for(var i=0;i<str_p.length;i++){
-    for(var j=0;j<str_l.length;j++){
-        if(str_p[i] == str_l[j] && !isInArr(arr,str_l[j])){
-            arr.push(str_l[j])
-        }
+var str = getFindsStr(phrase, letters);
+for(var i=0;i<str.length;i++){
+    if(str[i] == "_"){
+        return false;
     }
 }
-return arr.length == str_l.length;
-
+return true;
 }
 
-function isInArr(arr,letter){
-    for(var i=0;i<arr.length;i++){
-        if(letter == arr[i])
-          return true;
-    }
-    return false;
-}
